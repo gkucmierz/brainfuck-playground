@@ -12,11 +12,17 @@ if (args.length < 0) {
   bf.config({memorySize: 1024, bits: 16});
   let compiled = bf.compile(prog);
 
+  // console.log('compiled code:');
+  // console.log(compiled+'');
+  // console.log('');
+
   let time = [new Date()];
+  let input = args[1] || '';
+  console.log('input:', input);
   console.log('start:', time[0]);
   console.log('');
   let buf = [];
-  compiled.run(args[1] || '', (num, char) => {
+  compiled.run(input, (num, char) => {
     // console.log('output: ', char, num);
     if (char === '\n') {
       console.log(buf.join(''));
@@ -29,6 +35,6 @@ if (args.length < 0) {
   console.log('');
   time.push(new Date());
   console.log('finish:', time[1]);
-  console.log('elapsed [s]:', (time[1] - time[0]) * 1e-3);
+  console.log('elapsed [s]:', ((time[1] - time[0]) * 1e-3).toFixed(3));
 
 }
