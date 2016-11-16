@@ -9,12 +9,26 @@ if (args.length < 0) {
 } else {
   let prog = fs.readFileSync(['src/', args[0], '.bf'].join(''));
 
-  bf.config({memorySize: 256, bits: 16});
+  bf.config({memorySize: 1024, bits: 16});
   let compiled = bf.compile(prog);
 
-  var buf = [];
-  compiled.run('', (num, char) => buf.push(char));
-
-  console.log('result:');
+  let time = [new Date()];
+  console.log('start:', time[0]);
+  console.log('');
+  let buf = [];
+  compiled.run(args[1] || '', (num, char) => {
+    // console.log('output: ', char, num);
+    if (char === '\n') {
+      console.log(buf.join(''));
+      buf = [];
+    } else {
+      buf.push(char);
+    }
+  });
   console.log(buf.join(''));
+  console.log('');
+  time.push(new Date());
+  console.log('finish:', time[1]);
+  console.log('elapsed [s]:', (time[1] - time[0]) * 1e-3);
+
 }
